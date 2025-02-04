@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,10 +18,14 @@ import com.dam.tsk.service.impl.SBUserService;
 public class SpringConfig {
 
 
-    @Autowired
-    private SBUserService sbUserService;
-
-
+@Bean
+public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+	UserDetails admin = User.withUsername("Basant")
+			.password(encoder.encode("pwd1"))
+			.roles("ADMIN")
+			.build();
+	
+}
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
